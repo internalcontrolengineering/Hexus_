@@ -2048,34 +2048,34 @@
           let nuevosApuntes=imp.apuntes||[];
           let nuevasPersonas=imp.personasRegistradas||[];
           
-          let agregados=0, duplicados=0; 
+          guards.clear();
+          horarios.clear();
+          apuntes.clear();
+          personasRegistradas.clear();
+          
+          let agregados=0; 
           for(let [f,g] of nuevosGuards){ 
-            if(!guards.has(f)){ 
-              guards.set(f,g); 
-              agregados++; 
-            } else duplicados++; 
+            guards.set(f,g); 
+            agregados++; 
           } 
           for(let [f,h] of nuevosHorarios) {
-            if(!horarios.has(f)) horarios.set(f,h); 
+            horarios.set(f,h); 
           }
           for(let [f,a] of nuevosApuntes) {
-            if(!apuntes.has(f)) apuntes.set(f,a); 
+            apuntes.set(f,a); 
           }
           
           let personasAgregadas = 0;
           for(let [nom, pue] of nuevasPersonas) {
-            if(!personasRegistradas.has(nom)) {
-              personasRegistradas.set(nom, pue);
-              personasAgregadas++;
-            }
+            personasRegistradas.set(nom, pue);
+            personasAgregadas++;
           }
           guardarPersonas();
           
           saveToLocal(); 
           renderCurrentView(); 
           
-          let msg = `Agregados: ${agregados} guardias, ${personasAgregadas} personas`;
-          if(duplicados > 0) msg += `, omitidos: ${duplicados} duplicados`;
+          let msg = `Datos reemplazados. Cargados: ${agregados} guardias, ${personasAgregadas} personas`;
           Swal.fire('Importación', msg, 'success'); 
           resolve(true); 
         }catch(err){ 
