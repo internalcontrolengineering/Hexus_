@@ -205,16 +205,25 @@
     }
     .day-cell {
       border: 1px solid #e8f0f8;
-      min-height: 80px;
+      min-height: 95px;
       padding: 0.4rem;
       background: white;
       transition: all 0.15s ease;
       cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
     }
     .day-cell:hover {
       background: #fafdff;
       box-shadow: inset 0 0 0 1px #1a5d8c20;
       border-color: #bdd4e8;
+    }
+    .day-header-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 3px;
     }
     .day-number {
       font-weight: 700;
@@ -226,31 +235,59 @@
       text-align: center;
       border-radius: 30px;
       background: #eef3fc;
-      margin-bottom: 6px;
       color: #1a5d8c;
     }
     .other-month .day-number {
       color: #9bb7d0;
       background: #f8fbfe;
     }
-    .guardia-badge {
-      font-size: 0.6rem;
-      font-weight: 600;
-      padding: 4px 5px;
-      border-radius: 12px;
-      margin-top: 3px;
-      text-align: center;
-      word-break: break-word;
-      cursor: pointer;
-      transition: 0.05s linear;
+    .day-quick-add {
+      display: flex;
+      gap: 2px;
+    }
+    .quick-btn {
       background: #eef3fc;
       color: #1a5d8c;
-      border-left: 2px solid #1a5d8c;
-      line-height: 1.2;
+      border: 1px solid #cde1f0;
+      border-radius: 12px;
+      padding: 1px 6px;
+      font-size: 0.58rem;
+      font-weight: 700;
+      cursor: pointer;
+      line-height: 1.3;
     }
-    .guardia-badge:hover {
-      background: #e2edf8;
+    .quick-btn:hover {
+      background: #1a5d8c;
+      color: white;
+    }
+    .quick-btn.nota {
+      background: #fff3e0;
+      color: #c26b1a;
+      border-color: #f5d0a9;
+    }
+    .quick-btn.nota:hover {
+      background: #c26b1a;
+      color: white;
+    }
+    .guardia-item-block {
+      border-radius: 10px;
+      padding: 3px 5px;
+      background: #eef3fc;
+      border-left: 3px solid #1a5d8c;
+      cursor: pointer;
+      transition: 0.1s;
+    }
+    .guardia-item-block:hover {
+      filter: brightness(0.96);
       transform: translateY(-1px);
+    }
+    .guardia-badge {
+      font-size: 0.58rem;
+      font-weight: 600;
+      text-align: center;
+      word-break: break-word;
+      color: #1a5d8c;
+      line-height: 1.2;
     }
     .saturday-badge {
       font-size: 0.58rem;
@@ -264,7 +301,7 @@
     .apunte-badge {
       font-size: 0.58rem;
       background: #fff0e0;
-      border-radius: 12px;
+      border-radius: 10px;
       padding: 3px 5px;
       text-align: center;
       color: #c26b1a;
@@ -273,15 +310,21 @@
       white-space: normal;
       word-break: break-word;
       line-height: 1.2;
+      transition: 0.1s;
+    }
+    .apunte-badge:hover {
+      filter: brightness(0.96);
+      transform: translateY(-1px);
     }
     .horario-badge {
-      font-size: 0.55rem;
-      background: #dff0e8;
-      border-radius: 12px;
-      padding: 2px 5px;
+      font-size: 0.52rem;
+      background: rgba(255,255,255,0.75);
+      border-radius: 8px;
+      padding: 1px 4px;
       margin-top: 2px;
       text-align: center;
       color: #0a5e3e;
+      font-weight: 600;
     }
 
     .year-view-grid {
@@ -331,6 +374,9 @@
     }
     #historyModal {
       z-index: 15000;
+    }
+    #dayActionsModal {
+      z-index: 14500;
     }
     #clearDataModal {
       z-index: 17000 !important;
@@ -612,6 +658,7 @@
       padding: 0.8rem;
       max-height: 300px;
       overflow-y: auto;
+      margin-top: 10px;
     }
     .badge-change {
       background: #eef3fc;
@@ -739,22 +786,6 @@
       border: 1px solid #1a5d8c;
     }
 
-    .responsables-multi {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 3px;
-      margin-top: 2px;
-    }
-    .responsable-tag {
-      background: rgba(26, 93, 140, 0.15);
-      padding: 1px 8px;
-      border-radius: 12px;
-      font-size: 0.5rem;
-      font-weight: 600;
-      color: #1a5d8c;
-      white-space: nowrap;
-    }
-
     .clear-data-info {
       background: #f8fbfe;
       border-radius: 1rem;
@@ -790,6 +821,27 @@
       color: #7a4a0a;
     }
 
+    .day-action-card {
+      background: #f8fbfe;
+      border: 1px solid #dce9f2;
+      border-radius: 1rem;
+      padding: 10px 12px;
+      margin-bottom: 8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+    }
+    .day-action-card-info {
+      flex: 1;
+      font-size: 0.82rem;
+    }
+    .day-action-card-btns {
+      display: flex;
+      gap: 6px;
+      flex-shrink: 0;
+    }
+
     @media (max-width: 480px) {
       .controls {
         gap: 0.5rem;
@@ -807,12 +859,12 @@
         font-size: 0.7rem;
       }
       .day-cell {
-        min-height: 70px;
+        min-height: 75px;
         padding: 0.3rem;
       }
       .guardia-badge {
         font-size: 0.55rem;
-        padding: 3px 4px;
+        padding: 2px 3px;
       }
       .clear-data-info .key-item {
         font-size: 0.7rem;
@@ -877,6 +929,7 @@
       <button id="nextMonthBtn">▶</button>
     </div>
     <button id="addGuardiaBtn" class="btn-primary-action">➕ Nueva guardia</button>
+    <button id="addNotaBtn" class="btn-primary-action" style="background:#c26b1a;">📝 Nueva nota</button>
   </div>
   <div id="calendarView" class="calendar-container"></div>
   <footer>
@@ -910,6 +963,14 @@
 <div id="sessionTimer" class="session-timer" style="display:none;"><span id="timerText">01:00</span></div>
 
 <!-- MODALES -->
+<div id="dayActionsModal" class="modal">
+  <div class="modal-content">
+    <h3 id="dayActionsTitle">📅 Eventos del día</h3>
+    <div id="dayActionsBody"></div>
+    <div class="modal-buttons" id="dayActionsFooter"></div>
+  </div>
+</div>
+
 <div id="historyModal" class="modal"><div class="modal-content"><h3>📜 Historial de cambios</h3><div id="historyContent"></div><div class="modal-buttons"><button id="closeHistoryBtn" class="btn-secondary">Cerrar</button><button id="editFromHistoryBtn" class="btn-primary">✏️ Editar guardia</button></div></div></div>
 
 <div id="guardiaModal" class="modal">
@@ -940,7 +1001,7 @@
 
 <div id="apunteModal" class="modal">
   <div class="modal-content">
-    <h3>📝 Nota / Apunte</h3>
+    <h3 id="apunteModalTitle">📝 Nota / Apunte</h3>
     <div id="apunteFechaDisplay" style="margin-bottom:8px;"></div>
     <div id="apunteDateChangeWarning" style="display:none; background:#fff0e0; padding:8px; border-radius:20px; margin-bottom:10px; font-size:0.8rem;">⚠️ Si cambias la fecha, la nota se MOVERÁ</div>
     <input type="date" id="apunteFecha" />
@@ -1034,6 +1095,10 @@
   let tiempoRestante = MINUTOS_SESION * 60, temporizadorInactividad = null, temporizadorReloj = null;
   
   const APP_KEYS = ['guardiasApp', 'personasRegistradas', 'perfilActual'];
+
+  function generarId() {
+    return 'ev_' + Date.now().toString(36) + '_' + Math.random().toString(36).substring(2, 8);
+  }
   
   function actualizarReloj(){ let t=document.getElementById('timerText'); if(t){ let m=Math.floor(tiempoRestante/60),s=tiempoRestante%60; t.textContent=`${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`; let div=document.getElementById('sessionTimer'); if(div){ if(tiempoRestante<=10) div.classList.add('critical'); else if(tiempoRestante<=30) div.classList.add('warning'); else div.classList.remove('warning','critical'); } } }
   function iniciarContadorReloj(){ if(temporizadorReloj) clearInterval(temporizadorReloj); tiempoRestante=MINUTOS_SESION*60; actualizarReloj(); temporizadorReloj=setInterval(()=>{ if(tiempoRestante>0 && perfilActual){ tiempoRestante--; actualizarReloj(); } },1000); }
@@ -1072,6 +1137,10 @@
     document.querySelectorAll('.visible-control-interno').forEach(el => {
       el.style.display = esControlInterno ? 'inline-block' : 'none';
     });
+    const addGBtn = document.getElementById('addGuardiaBtn');
+    const addNBtn = document.getElementById('addNotaBtn');
+    if (addGBtn) addGBtn.style.display = esControlInterno ? 'inline-block' : 'none';
+    if (addNBtn) addNBtn.style.display = esControlInterno ? 'inline-block' : 'none';
   }
   
   async function cerrarSesion(){ 
@@ -1199,7 +1268,56 @@
     }
   }
   
-  // ==================== FUNCIONES ====================
+  // ==================== FUNCIONES DE ESTRUCTURA MÚLTIPLE ====================
+  // Cada día en `guards` guarda un array de objetos guardia: [{ id, personNames, position, color, entrada, salida, history }]
+  // Cada día en `apuntes` guarda un array de objetos nota: [{ id, titulo, texto, fechaCreacion, responsables, puesto, horario, color, fechaOriginal }]
+  
+  function normalizarGuardsEntry(rawVal, legacyHorario) {
+    if (!rawVal) return [];
+    let arr = Array.isArray(rawVal) ? rawVal : [rawVal];
+    return arr.map(g => ({
+      id: g.id || generarId(),
+      personNames: g.personNames || (g.personName ? [g.personName] : []),
+      position: g.position || "Sin especificar",
+      color: g.color || "#3b82f6",
+      entrada: g.entrada || (legacyHorario ? legacyHorario.entrada : null),
+      salida: g.salida || (legacyHorario ? legacyHorario.salida : null),
+      history: g.history || []
+    }));
+  }
+
+  function normalizarApuntesEntry(rawVal) {
+    if (!rawVal) return [];
+    let arr = Array.isArray(rawVal) ? rawVal : [rawVal];
+    return arr.map(a => ({
+      id: a.id || generarId(),
+      titulo: a.titulo || "",
+      texto: a.texto || "",
+      fechaCreacion: a.fechaCreacion || new Date().toLocaleString(),
+      responsables: a.responsables || [],
+      puesto: a.puesto || "Sin puesto",
+      horario: a.horario || "Sin horario",
+      color: a.color || "#f59e0b",
+      fechaOriginal: a.fechaOriginal || null
+    }));
+  }
+
+  function getGuardiasDelDia(fecha) {
+    return guards.get(fecha) || [];
+  }
+
+  function getApuntesDelDia(fecha) {
+    return apuntes.get(fecha) || [];
+  }
+
+  function findGuardiaById(fecha, id) {
+    return getGuardiasDelDia(fecha).find(g => g.id === id) || null;
+  }
+
+  function findApunteById(fecha, id) {
+    return getApuntesDelDia(fecha).find(a => a.id === id) || null;
+  }
+
   function isSaturday(d) {
     let partes = d.split('-');
     let fecha = new Date(Date.UTC(parseInt(partes[0]), parseInt(partes[1]) - 1, parseInt(partes[2])));
@@ -1355,23 +1473,30 @@
   let apunteDropdown = null;
   
   function generarMensajeParaPersona(nom) {
-    let msg = `📋 *GUARDIAS DE ${nom.toUpperCase()}*\n━━━━━━━━━━━━━━━━━━━━\n\n`;
+    let msg = `📋 *GUARDIAS DE ${nom.toUpperCase()}*
+━━━━━━━━━━━━━━━━━━━━
+
+`;
     
     let guardiasPersona = [];
-    for (let [fecha, g] of guards.entries()) {
-      let nombres = g.personNames || [g.personName];
-      if (nombres.includes(nom)) {
-        let h = horarios.get(fecha);
-        guardiasPersona.push({
-          fecha: fecha,
-          puesto: g.position,
-          horario: h ? `${h.entrada} - ${h.salida}` : 'Sin horario'
-        });
-      }
+    for (let [fecha, listaG] of guards.entries()) {
+      (listaG || []).forEach(g => {
+        let nombres = g.personNames || [g.personName];
+        if (nombres.includes(nom)) {
+          let horarioTxt = (g.entrada && g.salida) ? `${g.entrada} - ${g.salida}` : 'Sin horario';
+          guardiasPersona.push({
+            fecha: fecha,
+            puesto: g.position,
+            horario: horarioTxt
+          });
+        }
+      });
     }
     
     if (guardiasPersona.length === 0) {
-      msg += `❌ Sin guardias asignadas\n\n`;
+      msg += `❌ Sin guardias asignadas
+
+`;
     } else {
       guardiasPersona.sort((a,b) => a.fecha.localeCompare(b.fecha));
       guardiasPersona.forEach(g => {
@@ -1379,22 +1504,34 @@
         let fechaObj = new Date(Date.UTC(parseInt(partes[0]), parseInt(partes[1]) - 1, parseInt(partes[2])));
         let fd = fechaObj.toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' });
         let diaSemana = getDayOfWeekSpanish(g.fecha);
-        msg += `📌 ${fd} (${diaSemana})\n   👤 ${g.puesto}\n   🕒 ${g.horario}\n\n`;
+        msg += `📌 ${fd} (${diaSemana})
+   👤 ${g.puesto}
+   🕒 ${g.horario}
+
+`;
       });
     }
     
-    msg += `━━━━━━━━━━━━━━━━━━━━\n📝 *NOTAS DONDE ${nom.toUpperCase()} ES RESPONSABLE*\n━━━━━━━━━━━━━━━━━━━━\n\n`;
+    msg += `━━━━━━━━━━━━━━━━━━━━
+📝 *NOTAS DONDE ${nom.toUpperCase()} ES RESPONSABLE*
+━━━━━━━━━━━━━━━━━━━━
+
+`;
     
     let notasPersona = [];
-    for (let [fecha, nota] of apuntes.entries()) {
-      let responsables = nota.responsables || [];
-      if (responsables.includes(nom)) {
-        notasPersona.push({ fecha: fecha, nota: nota });
-      }
+    for (let [fecha, listaNotas] of apuntes.entries()) {
+      (listaNotas || []).forEach(nota => {
+        let responsables = nota.responsables || [];
+        if (responsables.includes(nom)) {
+          notasPersona.push({ fecha: fecha, nota: nota });
+        }
+      });
     }
     
     if (notasPersona.length === 0) {
-      msg += `✅ Sin notas donde sea responsable\n\n`;
+      msg += `✅ Sin notas donde sea responsable
+
+`;
     } else {
       notasPersona.sort((a,b) => a.fecha.localeCompare(b.fecha));
       let porMes = {};
@@ -1418,36 +1555,50 @@
         });
       });
       for (let [m, notas] of Object.entries(porMes)) {
-        msg += `📆 *${m.toUpperCase()}*\n────────────────\n`;
+        msg += `📆 *${m.toUpperCase()}*
+────────────────
+`;
         notas.forEach(n => {
-          msg += `   📌 Día ${n.dia} (${n.ds}): ${n.tit}\n`;
-          msg += `      👤 ${n.responsables.join(", ")} · ${n.puesto}\n`;
-          msg += `      🕒 ${n.horario}\n`;
+          msg += `   📌 Día ${n.dia} (${n.ds}): ${n.tit}
+`;
+          msg += `      👤 ${n.responsables.join(", ")} · ${n.puesto}
+`;
+          msg += `      🕒 ${n.horario}
+`;
           if (n.txt) {
-            msg += `      📝 ${n.txt}\n`;
+            msg += `      📝 ${n.txt}
+`;
           }
-          msg += `\n`;
+          msg += `
+`;
         });
       }
     }
     
-    msg += `━━━━━━━━━━━━━━━━━━━━\n📱 Hexus · Gestión de Guardias\n⏰ ${new Date().toLocaleString('es-ES')}`;
+    msg += `━━━━━━━━━━━━━━━━━━━━
+📱 Hexus · Gestión de Guardias
+⏰ ${new Date().toLocaleString('es-ES')}`;
     return msg;
   }
   
   function generarMensajeTodos() {
-    let msg = `📋 *REPORTE COMPLETO DE GUARDIAS*\n━━━━━━━━━━━━━━━━━━━━\n\n`;
+    let msg = `📋 *REPORTE COMPLETO DE GUARDIAS*
+━━━━━━━━━━━━━━━━━━━━
+
+`;
     
     let personasMap = new Map();
-    for (let [fecha, g] of guards.entries()) {
-      let nombres = g.personNames || [g.personName];
-      let h = horarios.get(fecha);
-      nombres.forEach(nom => {
-        if (!personasMap.has(nom)) personasMap.set(nom, []);
-        personasMap.get(nom).push({
-          fecha: fecha,
-          puesto: g.position,
-          horario: h ? `${h.entrada} - ${h.salida}` : 'Sin horario'
+    for (let [fecha, listaG] of guards.entries()) {
+      (listaG || []).forEach(g => {
+        let nombres = g.personNames || [g.personName];
+        let horarioTxt = (g.entrada && g.salida) ? `${g.entrada} - ${g.salida}` : 'Sin horario';
+        nombres.forEach(nom => {
+          if (!personasMap.has(nom)) personasMap.set(nom, []);
+          personasMap.get(nom).push({
+            fecha: fecha,
+            puesto: g.position,
+            horario: horarioTxt
+          });
         });
       });
     }
@@ -1455,31 +1606,46 @@
     let personas = Array.from(personasMap.entries()).sort((a,b) => a[0].localeCompare(b[0]));
     
     if (personas.length === 0) {
-      msg += `❌ Sin guardias asignadas\n\n`;
+      msg += `❌ Sin guardias asignadas
+
+`;
     } else {
       personas.forEach(([nom, lista]) => {
-        msg += `👤 *${nom.toUpperCase()}*\n`;
+        msg += `👤 *${nom.toUpperCase()}*
+`;
         lista.sort((a,b) => a.fecha.localeCompare(b.fecha));
         lista.forEach(g => {
           let partes = g.fecha.split('-');
           let fechaObj = new Date(Date.UTC(parseInt(partes[0]), parseInt(partes[1]) - 1, parseInt(partes[2])));
           let fd = fechaObj.toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' });
           let diaSemana = getDayOfWeekSpanish(g.fecha);
-          msg += `   📌 ${fd} (${diaSemana})\n      👤 ${g.puesto}\n      🕒 ${g.horario}\n\n`;
+          msg += `   📌 ${fd} (${diaSemana})
+      👤 ${g.puesto}
+      🕒 ${g.horario}
+
+`;
         });
-        msg += `────────────────\n\n`;
+        msg += `────────────────
+
+`;
       });
     }
     
-    msg += `━━━━━━━━━━━━━━━━━━━━\n📝 *TODAS LAS NOTAS REGISTRADAS*\n━━━━━━━━━━━━━━━━━━━━\n\n`;
+    msg += `━━━━━━━━━━━━━━━━━━━━
+📝 *TODAS LAS NOTAS REGISTRADAS*
+━━━━━━━━━━━━━━━━━━━━
+
+`;
     
-    let fechas = Array.from(apuntes.keys()).filter(f => apuntes.get(f)).sort((a, b) => {
+    let fechas = Array.from(apuntes.keys()).filter(f => (apuntes.get(f) || []).length > 0).sort((a, b) => {
       let pa = a.split('-'), pb = b.split('-');
       return new Date(Date.UTC(parseInt(pa[0]), parseInt(pa[1]) - 1, parseInt(pa[2]))) - new Date(Date.UTC(parseInt(pb[0]), parseInt(pb[1]) - 1, parseInt(pb[2])));
     });
     
     if (fechas.length === 0) {
-      msg += `✅ Sin notas registradas\n\n`;
+      msg += `✅ Sin notas registradas
+
+`;
     } else {
       let porMes = {};
       fechas.forEach(f => {
@@ -1487,42 +1653,54 @@
         let d = new Date(Date.UTC(parseInt(partes[0]), parseInt(partes[1]) - 1, parseInt(partes[2])));
         let m = d.toLocaleDateString('es-ES', { month: 'long', year: 'numeric', timeZone: 'UTC' });
         if (!porMes[m]) porMes[m] = [];
-        let nota = apuntes.get(f);
-        let tituloMostrar = nota.titulo && nota.titulo.trim() ? nota.titulo : "(Sin título)";
-        let responsables = nota.responsables || ["Sin responsable"];
-        let puesto = nota.puesto || "Sin puesto";
-        let horario = nota.horario || "Sin horario";
-        porMes[m].push({
-          dia: d.getUTCDate(),
-          ds: getDayOfWeekSpanish(f),
-          tit: tituloMostrar,
-          txt: nota.texto || '',
-          responsables: responsables,
-          puesto: puesto,
-          horario: horario
+        let listaNotas = apuntes.get(f) || [];
+        listaNotas.forEach(nota => {
+          let tituloMostrar = nota.titulo && nota.titulo.trim() ? nota.titulo : "(Sin título)";
+          let responsables = nota.responsables || ["Sin responsable"];
+          let puesto = nota.puesto || "Sin puesto";
+          let horario = nota.horario || "Sin horario";
+          porMes[m].push({
+            dia: d.getUTCDate(),
+            ds: getDayOfWeekSpanish(f),
+            tit: tituloMostrar,
+            txt: nota.texto || '',
+            responsables: responsables,
+            puesto: puesto,
+            horario: horario
+          });
         });
       });
       for (let [m, notas] of Object.entries(porMes)) {
-        msg += `📆 *${m.toUpperCase()}*\n────────────────\n`;
+        msg += `📆 *${m.toUpperCase()}*
+────────────────
+`;
         notas.forEach(n => {
-          msg += `   📌 Día ${n.dia} (${n.ds}): ${n.tit}\n`;
-          msg += `      👤 ${n.responsables.join(", ")} · ${n.puesto}\n`;
-          msg += `      🕒 ${n.horario}\n`;
+          msg += `   📌 Día ${n.dia} (${n.ds}): ${n.tit}
+`;
+          msg += `      👤 ${n.responsables.join(", ")} · ${n.puesto}
+`;
+          msg += `      🕒 ${n.horario}
+`;
           if (n.txt) {
-            msg += `      📝 ${n.txt}\n`;
+            msg += `      📝 ${n.txt}
+`;
           }
-          msg += `\n`;
+          msg += `
+`;
         });
       }
     }
     
-    msg += `━━━━━━━━━━━━━━━━━━━━\n📱 Hexus · Gestión de Guardias\n⏰ ${new Date().toLocaleString('es-ES')}`;
+    msg += `━━━━━━━━━━━━━━━━━━━━
+📱 Hexus · Gestión de Guardias
+⏰ ${new Date().toLocaleString('es-ES')}`;
     return msg;
   }
   
   let guards=new Map(), horarios=new Map(), apuntes=new Map();
   let currentView="month", currentYear=new Date().getFullYear(), currentMonth=new Date().getMonth(), currentSelectedDate=new Date().toISOString().slice(0,10), personasRegistradas=new Map();
-  let currentApunteOriginalDate = null;
+  let currentEditOriginalDate=null, currentEditGuardiaId=null;
+  let currentApunteOriginalDate=null, currentEditApunteId=null;
   
   function getColorForPerson(n){ let pal=["#3b82f6","#f97316","#10b981","#8b5cf6","#ec489a","#06b6d4","#ef4444","#84cc16","#f59e0b","#6366f1"],h=0; for(let i=0;i<n.length;i++) h=((h<<5)-h)+n.charCodeAt(i); return pal[Math.abs(h)%pal.length]; }
   
@@ -1568,53 +1746,107 @@
   
   function validarHorario(eH,eM,sH,sM){ if(!eH||!eM||!sH||!sM) return true; let e=parseInt(eH)*60+parseInt(eM), s=parseInt(sH)*60+parseInt(sM); return s>e; }
   
-  function saveGuardiaWithOptionalMove(orig,newD,nombres,pos,col,ent,sal){ 
+  function saveGuardiaWithOptionalMove(origDate, guardiaId, newD, nombres, pos, col, ent, sal){ 
     if(!nombres || nombres.length === 0){ alert("Seleccione al menos un responsable"); return false; } 
     if(!isSaturday(newD)){ alert(`❌ ${newD} es ${getDayOfWeekSpanish(newD)}. Solo sábados.`); return false; } 
     if(ent&&sal){ let [eh,em]=ent.split(':'),[sh,sm]=sal.split(':'); if(!validarHorario(eh,em,sh,sm)){ alert("Salida debe ser posterior"); return false; } } 
     let cNombres = nombres.map(n => n.trim());
     let cPos = pos?pos.trim():"Sin especificar";
     let fCol = col || getColorForPerson(cNombres[0]);
-    let existNew=guards.get(newD), moving=(orig&&orig!==newD);
-    if(ent&&sal) horarios.set(newD,{entrada:ent,salida:sal});
-    else if(horarios.has(newD) && !ent && !sal) horarios.delete(newD);
-    if(moving){ 
-      let origG=guards.get(orig); 
-      if(!origG) return createNewGuardia(newD,cNombres,cPos,fCol,ent,sal); 
-      if(existNew&&orig!==newD){ 
-        if(!confirm(`⚠️ Ya existe guardia de ${existNew.personNames.join(", ")} el ${newD}. ¿Reemplazar?`)) return false; 
-      } 
-      let newHist=[...(origG.history||[])]; 
-      newHist.push({type:"movimiento",previousDate:orig,previousPerson:origG.personNames.join(", "),previousPosition:origG.position,newDate:newD,newPerson:cNombres.join(", "),changedAt:new Date().toISOString(),description:`Movimiento ${orig} → ${newD}`}); 
-      if(origG.personNames.join(",")!==cNombres.join(",")||origG.position!==cPos||origG.color!==fCol) newHist.push({type:"edición",previousDate:newD,previousPerson:origG.personNames.join(", "),changedAt:new Date().toISOString(),newPerson:cNombres.join(", "),description:`Edición: ${origG.personNames.join(", ")} → ${cNombres.join(", ")}`}); 
-      guards.set(newD,{personNames:cNombres,position:cPos,color:fCol,history:newHist}); 
-      guards.delete(orig); 
-      renderCurrentView(); 
-      alert(`✅ MOVIDA de ${orig} a ${newD}`); 
-      return true; 
-    } else if(orig&&orig===newD){ 
-      let ex=guards.get(newD); 
-      let hist=ex?[...(ex.history||[])]:[]; 
-      if(ex&&(ex.personNames.join(",")!==cNombres.join(",")||ex.position!==cPos||ex.color!==fCol)) hist.push({type:"edición",previousDate:newD,previousPerson:ex.personNames.join(", "),changedAt:new Date().toISOString(),newPerson:cNombres.join(", "),description:`Edición: ${ex.personNames.join(", ")} → ${cNombres.join(", ")}`}); 
-      guards.set(newD,{personNames:cNombres,position:cPos,color:fCol,history:hist}); 
-      renderCurrentView(); 
-      alert(`✅ Actualizada en ${newD}`); 
-      return true; 
-    } else return createNewGuardia(newD,cNombres,cPos,fCol,ent,sal); 
+    let moving = (origDate && guardiaId && origDate !== newD);
+
+    if (guardiaId && origDate) {
+      let origList = getGuardiasDelDia(origDate);
+      let origG = origList.find(g => g.id === guardiaId);
+      if (!origG) return createNewGuardia(newD, cNombres, cPos, fCol, ent, sal);
+
+      let newHist = [...(origG.history || [])];
+      if (moving) {
+        newHist.push({
+          type: "movimiento",
+          previousDate: origDate,
+          previousPerson: origG.personNames.join(", "),
+          previousPosition: origG.position,
+          newDate: newD,
+          newPerson: cNombres.join(", "),
+          changedAt: new Date().toISOString(),
+          description: `Movimiento ${origDate} → ${newD}`
+        });
+      }
+      if (origG.personNames.join(",") !== cNombres.join(",") || origG.position !== cPos || origG.color !== fCol) {
+        newHist.push({
+          type: "edición",
+          previousDate: newD,
+          previousPerson: origG.personNames.join(", "),
+          changedAt: new Date().toISOString(),
+          newPerson: cNombres.join(", "),
+          description: `Edición: ${origG.personNames.join(", ")} → ${cNombres.join(", ")}`
+        });
+      }
+
+      let updatedGuardia = {
+        id: guardiaId,
+        personNames: cNombres,
+        position: cPos,
+        color: fCol,
+        entrada: ent || null,
+        salida: sal || null,
+        history: newHist
+      };
+
+      if (moving) {
+        let filteredOrig = origList.filter(g => g.id !== guardiaId);
+        if (filteredOrig.length > 0) guards.set(origDate, filteredOrig);
+        else guards.delete(origDate);
+
+        let destList = getGuardiasDelDia(newD);
+        destList.push(updatedGuardia);
+        guards.set(newD, destList);
+        renderCurrentView();
+        alert(`✅ Guardia MOVIDA de ${origDate} a ${newD}`);
+        return true;
+      } else {
+        let updatedList = origList.map(g => g.id === guardiaId ? updatedGuardia : g);
+        guards.set(newD, updatedList);
+        renderCurrentView();
+        alert(`✅ Guardia actualizada en ${newD}`);
+        return true;
+      }
+    } else {
+      return createNewGuardia(newD, cNombres, cPos, fCol, ent, sal);
+    }
   }
   
-  function createNewGuardia(d,nombres,p,c,ent,sal){ 
-    if(guards.has(d)&&!confirm(`Ya existe guardia en ${d}. ¿Sobrescribir?`)) return false; 
-    guards.set(d,{personNames:nombres,position:p,color:c,history:[]}); 
-    if(ent&&sal) horarios.set(d,{entrada:ent,salida:sal}); 
+  function createNewGuardia(d, nombres, p, c, ent, sal){ 
+    let list = getGuardiasDelDia(d);
+    list.push({
+      id: generarId(),
+      personNames: nombres,
+      position: p,
+      color: c,
+      entrada: ent || null,
+      salida: sal || null,
+      history: []
+    });
+    guards.set(d, list);
     renderCurrentView(); 
-    alert(`✅ Creada en ${d}`); 
+    alert(`✅ Guardia agregada en ${d}`); 
     return true; 
   }
   
-  function removeGuardia(d){ if(guards.has(d)){ guards.delete(d); horarios.delete(d); renderCurrentView(); return true; } return false; }
+  function removeGuardia(d, guardiaId){ 
+    let list = getGuardiasDelDia(d);
+    if (list.length > 0) {
+      let filtered = guardiaId ? list.filter(g => g.id !== guardiaId) : [];
+      if (filtered.length > 0) guards.set(d, filtered);
+      else guards.delete(d);
+      renderCurrentView(); 
+      return true; 
+    } 
+    return false; 
+  }
   
-  function saveApunteWithOptionalMove(origDate, newDate, titulo, texto, responsables, puesto, eH, eM, sH, sM, color){ 
+  function saveApunteWithOptionalMove(origDate, apunteId, newDate, titulo, texto, responsables, puesto, eH, eM, sH, sM, color){ 
     if(!titulo || titulo.trim()===""){ alert("El título es obligatorio"); return false; } 
     if(!responsables || responsables.length === 0){ alert("Seleccione al menos un responsable"); return false; }
     let horarioTexto = "";
@@ -1628,16 +1860,11 @@
       horarioTexto = "Sin horario";
     }
     
-    let moving = (origDate && origDate !== newDate);
-    
-    if(moving) {
-      if(apuntes.has(newDate)) {
-        if(!confirm(`⚠️ Ya existe una nota en ${newDate}. ¿Reemplazar?`)) return false;
-      }
-      apuntes.delete(origDate);
-    }
-    
-    apuntes.set(newDate,{ 
+    let moving = (origDate && apunteId && origDate !== newDate);
+    let finalId = apunteId || generarId();
+
+    let notaObj = {
+      id: finalId,
       titulo: titulo.trim(), 
       texto: texto.trim() || "", 
       fechaCreacion: new Date().toLocaleString(),
@@ -1646,7 +1873,26 @@
       horario: horarioTexto,
       color: color || "#f59e0b",
       fechaOriginal: moving ? origDate : null
-    }); 
+    };
+
+    if (apunteId && origDate) {
+      if (moving) {
+        let origList = getApuntesDelDia(origDate).filter(a => a.id !== apunteId);
+        if (origList.length > 0) apuntes.set(origDate, origList);
+        else apuntes.delete(origDate);
+
+        let destList = getApuntesDelDia(newDate);
+        destList.push(notaObj);
+        apuntes.set(newDate, destList);
+      } else {
+        let list = getApuntesDelDia(newDate).map(a => a.id === apunteId ? notaObj : a);
+        apuntes.set(newDate, list);
+      }
+    } else {
+      let list = getApuntesDelDia(newDate);
+      list.push(notaObj);
+      apuntes.set(newDate, list);
+    }
     
     renderCurrentView(); 
     saveToLocal(); 
@@ -1654,9 +1900,55 @@
     return true; 
   }
   
-  function removeApunte(d){ if(apuntes.has(d)){ apuntes.delete(d); renderCurrentView(); saveToLocal(); } }
-  function saveToLocal(){ localStorage.setItem("guardiasApp",JSON.stringify({guards:Array.from(guards.entries()),horarios:Array.from(horarios.entries()),apuntes:Array.from(apuntes.entries()),currentYear,currentView,currentMonth,currentSelectedDate})); }
-  function loadFromLocal(){ let raw=localStorage.getItem("guardiasApp"); if(raw){ let d=JSON.parse(raw); if(d.guards) guards=new Map(d.guards); if(d.horarios) horarios=new Map(d.horarios); if(d.apuntes) apuntes=new Map(d.apuntes); if(d.currentYear) currentYear=d.currentYear; if(d.currentView) currentView=d.currentView; if(d.currentMonth!==undefined) currentMonth=d.currentMonth; if(d.currentSelectedDate) currentSelectedDate=d.currentSelectedDate; } }
+  function removeApunte(d, apunteId){ 
+    let list = getApuntesDelDia(d);
+    if (list.length > 0) {
+      let filtered = apunteId ? list.filter(a => a.id !== apunteId) : [];
+      if (filtered.length > 0) apuntes.set(d, filtered);
+      else apuntes.delete(d);
+      renderCurrentView(); 
+      saveToLocal(); 
+    } 
+  }
+
+  function saveToLocal(){ 
+    localStorage.setItem("guardiasApp",JSON.stringify({
+      guards:Array.from(guards.entries()),
+      horarios:Array.from(horarios.entries()),
+      apuntes:Array.from(apuntes.entries()),
+      currentYear,
+      currentView,
+      currentMonth,
+      currentSelectedDate
+    })); 
+  }
+
+  function loadFromLocal(){ 
+    let raw=localStorage.getItem("guardiasApp"); 
+    if(raw){ 
+      let d=JSON.parse(raw); 
+      let legacyHorarios = new Map(d.horarios || []);
+      horarios = legacyHorarios;
+      if(d.guards) {
+        guards = new Map();
+        for (let [fecha, val] of d.guards) {
+          let norm = normalizarGuardsEntry(val, legacyHorarios.get(fecha));
+          if (norm.length > 0) guards.set(fecha, norm);
+        }
+      }
+      if(d.apuntes) {
+        apuntes = new Map();
+        for (let [fecha, val] of d.apuntes) {
+          let norm = normalizarApuntesEntry(val);
+          if (norm.length > 0) apuntes.set(fecha, norm);
+        }
+      }
+      if(d.currentYear) currentYear=d.currentYear; 
+      if(d.currentView) currentView=d.currentView; 
+      if(d.currentMonth!==undefined) currentMonth=d.currentMonth; 
+      if(d.currentSelectedDate) currentSelectedDate=d.currentSelectedDate; 
+    } 
+  }
   
   function cargarPersonas(){ 
     let st=localStorage.getItem("personasRegistradas"); 
@@ -1687,16 +1979,6 @@
       apunteDropdown.setSelected(sel);
     }
     actualizarListaPersonasModal(); 
-  }
-  
-  function obtenerSeleccionadosGuardia() {
-    if (guardiaDropdown) return guardiaDropdown.getSelected();
-    return [];
-  }
-  
-  function obtenerSeleccionadosApunte() {
-    if (apunteDropdown) return apunteDropdown.getSelected();
-    return [];
   }
   
   function habilitarEdicionPersona(elementoNombre, elementoPuesto, nombreOriginal, puestoOriginal) {
@@ -1731,26 +2013,38 @@
           if (nuevoNombre !== nombreOriginal) {
               personasRegistradas.set(nuevoNombre, nuevoPuesto);
               personasRegistradas.delete(nombreOriginal);
-              for (let [fecha, guardia] of guards.entries()) {
-                  if (guardia.personNames.includes(nombreOriginal)) {
-                      guardia.personNames = guardia.personNames.map(n => n === nombreOriginal ? nuevoNombre : n);
-                      guardia.color = getColorForPerson(guardia.personNames[0]);
-                      guards.set(fecha, guardia);
-                  }
+              for (let [fecha, listaG] of guards.entries()) {
+                  let changed = false;
+                  listaG.forEach(guardia => {
+                      if (guardia.personNames.includes(nombreOriginal)) {
+                          guardia.personNames = guardia.personNames.map(n => n === nombreOriginal ? nuevoNombre : n);
+                          guardia.color = getColorForPerson(guardia.personNames[0]);
+                          changed = true;
+                      }
+                  });
+                  if (changed) guards.set(fecha, listaG);
               }
-              for (let [fecha, nota] of apuntes.entries()) {
-                  if (nota.responsables.includes(nombreOriginal)) {
-                      nota.responsables = nota.responsables.map(n => n === nombreOriginal ? nuevoNombre : n);
-                      apuntes.set(fecha, nota);
-                  }
+              for (let [fecha, listaN] of apuntes.entries()) {
+                  let changed = false;
+                  listaN.forEach(nota => {
+                      if (nota.responsables.includes(nombreOriginal)) {
+                          nota.responsables = nota.responsables.map(n => n === nombreOriginal ? nuevoNombre : n);
+                          changed = true;
+                      }
+                  });
+                  if (changed) apuntes.set(fecha, listaN);
               }
           } else {
               personasRegistradas.set(nombreOriginal, nuevoPuesto);
-              for (let [fecha, nota] of apuntes.entries()) {
-                  if (nota.responsables.includes(nombreOriginal)) {
-                      nota.puesto = nuevoPuesto;
-                      apuntes.set(fecha, nota);
-                  }
+              for (let [fecha, listaN] of apuntes.entries()) {
+                  let changed = false;
+                  listaN.forEach(nota => {
+                      if (nota.responsables.includes(nombreOriginal) && nota.responsables.length === 1) {
+                          nota.puesto = nuevoPuesto;
+                          changed = true;
+                      }
+                  });
+                  if (changed) apuntes.set(fecha, listaN);
               }
           }
           guardarPersonas();
@@ -1821,26 +2115,31 @@
   
   function eliminarPersonaCompleta(nom){ 
     personasRegistradas.delete(nom); 
-    for(let [f,g] of guards.entries()) { 
-      if(g.personNames.includes(nom)) { 
-        g.personNames = g.personNames.filter(n => n !== nom);
-        if(g.personNames.length === 0) {
-          guards.delete(f); 
-          horarios.delete(f);
+    for(let [f,listaG] of guards.entries()) { 
+      let nuevaListaG = [];
+      listaG.forEach(g => {
+        if(g.personNames.includes(nom)) {
+          g.personNames = g.personNames.filter(n => n !== nom);
+          if(g.personNames.length > 0) nuevaListaG.push(g);
         } else {
-          guards.set(f, g);
+          nuevaListaG.push(g);
         }
-      } 
+      });
+      if(nuevaListaG.length === 0) guards.delete(f);
+      else guards.set(f, nuevaListaG);
     } 
-    for(let [f,a] of apuntes.entries()) { 
-      if(a.responsables.includes(nom)) { 
-        a.responsables = a.responsables.filter(n => n !== nom);
-        if(a.responsables.length === 0) {
-          apuntes.delete(f);
+    for(let [f,listaA] of apuntes.entries()) { 
+      let nuevaListaA = [];
+      listaA.forEach(a => {
+        if(a.responsables.includes(nom)) {
+          a.responsables = a.responsables.filter(n => n !== nom);
+          if(a.responsables.length > 0) nuevaListaA.push(a);
         } else {
-          apuntes.set(f, a);
+          nuevaListaA.push(a);
         }
-      } 
+      });
+      if(nuevaListaA.length === 0) apuntes.delete(f);
+      else apuntes.set(f, nuevaListaA);
     }
     guardarPersonas(); 
     saveToLocal(); 
@@ -1880,34 +2179,14 @@
     document.getElementById("nuevaPersonaPuesto").value="";
     
     if (window._modalOrigen === 'apunte') {
-      let fechaActual = document.getElementById("apunteFecha").value;
-      if (fechaActual) {
-        document.getElementById("apunteModal").style.display = "flex";
-        if (apunteDropdown) {
-          apunteDropdown.refresh();
-          const exist = apuntes.get(fechaActual);
-          if (exist && exist.responsables) {
-            apunteDropdown.setSelected(exist.responsables);
-            if (exist.responsables.length === 1 && personasRegistradas.has(exist.responsables[0])) {
-              document.getElementById("apuntePersonPosition").value = personasRegistradas.get(exist.responsables[0]) || exist.puesto;
-            }
-          }
-        }
+      document.getElementById("apunteModal").style.display = "flex";
+      if (apunteDropdown) {
+        apunteDropdown.refresh();
       }
     } else if (window._modalOrigen === 'guardia') {
-      let fechaActual = document.getElementById("modalDate").value;
-      if (fechaActual) {
-        document.getElementById("guardiaModal").style.display = "flex";
-        if (guardiaDropdown) {
-          guardiaDropdown.refresh();
-          const ex = guards.get(fechaActual);
-          if (ex && ex.personNames) {
-            guardiaDropdown.setSelected(ex.personNames);
-            if (ex.personNames.length === 1 && personasRegistradas.has(ex.personNames[0])) {
-              document.getElementById("personPosition").value = personasRegistradas.get(ex.personNames[0]) || ex.position;
-            }
-          }
-        }
+      document.getElementById("guardiaModal").style.display = "flex";
+      if (guardiaDropdown) {
+        guardiaDropdown.refresh();
       }
     }
     window._modalOrigen = null;
@@ -1934,13 +2213,15 @@
   
   function obtenerPersonasConGuardias(){ 
     let map=new Map(); 
-    for(let [f,g] of guards.entries()){ 
-      let h=horarios.get(f); 
-      let nombres = g.personNames || [g.personName]; 
-      nombres.forEach(nom => { 
-        if(!map.has(nom)) map.set(nom,[]); 
-        map.get(nom).push({fecha:f,puesto:g.position,horario:h?`${h.entrada} - ${h.salida}`:'Sin horario'}); 
-      }); 
+    for(let [f,listaG] of guards.entries()){ 
+      (listaG || []).forEach(g => {
+        let horarioTxt = (g.entrada && g.salida) ? `${g.entrada} - ${g.salida}` : 'Sin horario';
+        let nombres = g.personNames || [g.personName]; 
+        nombres.forEach(nom => { 
+          if(!map.has(nom)) map.set(nom,[]); 
+          map.get(nom).push({fecha:f,puesto:g.position,horario:horarioTxt}); 
+        }); 
+      });
     } 
     return Array.from(map.entries()).sort((a,b)=>a[0].localeCompare(b[0])); 
   }
@@ -1952,9 +2233,11 @@
     }
     let personas = obtenerPersonasConGuardias();
     let personasNotas = new Set();
-    for (let [fecha, nota] of apuntes.entries()) {
-      let responsables = nota.responsables || [];
-      responsables.forEach(nom => personasNotas.add(nom));
+    for (let [fecha, listaNotas] of apuntes.entries()) {
+      (listaNotas || []).forEach(nota => {
+        let responsables = nota.responsables || [];
+        responsables.forEach(nom => personasNotas.add(nom));
+      });
     }
     
     let todasPersonas = new Set();
@@ -2004,10 +2287,10 @@
     document.getElementById('cancelarEnvio').onclick=()=>div.remove(); 
   }
   
-  // ===== FUNCIONES EXPORTAR E IMPORTAR CON personasRegistradas =====
+  // ===== FUNCIONES EXPORTAR E IMPORTAR =====
   async function exportarJSON(){ 
     let data={
-      version:"1.0",
+      version:"2.0",
       exportDate:new Date().toISOString(),
       guards:Array.from(guards.entries()),
       horarios:Array.from(horarios.entries()),
@@ -2052,17 +2335,28 @@
           horarios.clear();
           apuntes.clear();
           personasRegistradas.clear();
+
+          let legacyHorarios = new Map(nuevosHorarios);
+          for(let [f,h] of nuevosHorarios) {
+            horarios.set(f,h);
+          }
           
           let agregados=0; 
-          for(let [f,g] of nuevosGuards){ 
-            guards.set(f,g); 
-            agregados++; 
+          for(let [f,gVal] of nuevosGuards){ 
+            let norm = normalizarGuardsEntry(gVal, legacyHorarios.get(f));
+            if (norm.length > 0) {
+              guards.set(f, norm);
+              agregados += norm.length;
+            }
           } 
-          for(let [f,h] of nuevosHorarios) {
-            horarios.set(f,h); 
-          }
-          for(let [f,a] of nuevosApuntes) {
-            apuntes.set(f,a); 
+          
+          let notasAgregadas=0;
+          for(let [f,aVal] of nuevosApuntes) {
+            let norm = normalizarApuntesEntry(aVal);
+            if (norm.length > 0) {
+              apuntes.set(f, norm);
+              notasAgregadas += norm.length;
+            }
           }
           
           let personasAgregadas = 0;
@@ -2075,7 +2369,7 @@
           saveToLocal(); 
           renderCurrentView(); 
           
-          let msg = `Datos reemplazados. Cargados: ${agregados} guardias, ${personasAgregadas} personas`;
+          let msg = `Datos reemplazados. Cargados: ${agregados} guardias, ${notasAgregadas} notas, ${personasAgregadas} personas`;
           Swal.fire('Importación', msg, 'success'); 
           resolve(true); 
         }catch(err){ 
@@ -2087,16 +2381,117 @@
       reader.readAsText(file); 
     }); 
   }
+
+  // ==================== SELECTOR DE EVENTOS DEL DÍA (CUANDO HAY VARIOS O EN SÁBADO) ====================
+  function openDayActionsModal(d) {
+    let modal = document.getElementById("dayActionsModal");
+    let title = document.getElementById("dayActionsTitle");
+    let body = document.getElementById("dayActionsBody");
+    let footer = document.getElementById("dayActionsFooter");
+
+    let sat = isSaturday(d);
+    let listaG = getGuardiasDelDia(d);
+    let listaA = getApuntesDelDia(d);
+
+    title.innerHTML = `📅 ${d} (${getDayOfWeekSpanish(d)})`;
+
+    let html = '';
+
+    if (sat) {
+      html += `<div style="font-weight:700; font-size:0.8rem; color:#1a5d8c; margin:6px 0;">🛡️ Guardias registradas (${listaG.length})</div>`;
+      if (listaG.length === 0) {
+        html += `<div style="font-size:0.78rem; color:#6f8aaa; margin-bottom:10px;">Sin guardias asignadas este sábado.</div>`;
+      } else {
+        listaG.forEach(g => {
+          let nombres = g.personNames.join(", ");
+          let horarioTxt = (g.entrada && g.salida) ? ` · 🕒 ${g.entrada} - ${g.salida}` : '';
+          html += `<div class="day-action-card" style="border-left:4px solid ${g.color};">
+            <div class="day-action-card-info">
+              <strong>👤 ${escapeHtml(nombres)}</strong><br>
+              <span style="color:#4a7a9e; font-size:0.74rem;">💼 ${escapeHtml(g.position)}${horarioTxt}</span>
+            </div>
+            <div class="day-action-card-btns">
+              <button class="btn-secondary" style="padding:4px 10px; font-size:0.72rem;" onclick="closeDayActionsModal(); showHistoryModal('${d}', '${g.id}')">📜</button>
+              ${!soloLectura ? `<button class="btn-primary" style="padding:4px 10px; font-size:0.72rem;" onclick="closeDayActionsModal(); openModalForDate('${d}', '${g.id}')">✏️</button>` : ''}
+            </div>
+          </div>`;
+        });
+      }
+    }
+
+    html += `<div style="font-weight:700; font-size:0.8rem; color:#c26b1a; margin:10px 0 6px 0;">📝 Notas registradas (${listaA.length})</div>`;
+    if (listaA.length === 0) {
+      html += `<div style="font-size:0.78rem; color:#6f8aaa; margin-bottom:10px;">Sin notas registradas en esta fecha.</div>`;
+    } else {
+      listaA.forEach(a => {
+        let resp = (a.responsables || []).join(", ");
+        let color = a.color || '#f59e0b';
+        html += `<div class="day-action-card" style="border-left:4px solid ${color};">
+          <div class="day-action-card-info">
+            <strong>📌 ${escapeHtml(a.titulo)}</strong><br>
+            <span style="color:#4a7a9e; font-size:0.74rem;">👤 ${escapeHtml(resp)} · 🕒 ${escapeHtml(a.horario || 'Sin horario')}</span>
+          </div>
+          <div class="day-action-card-btns">
+            ${soloLectura 
+              ? `<button class="btn-secondary" style="padding:4px 10px; font-size:0.72rem;" onclick="closeDayActionsModal(); verDetalleNotaSoloLectura('${d}', '${a.id}')">👁️ Ver</button>`
+              : `<button class="btn-primary" style="padding:4px 10px; font-size:0.72rem;" onclick="closeDayActionsModal(); openApunteModal('${d}', '${a.id}')">✏️</button>`
+            }
+          </div>
+        </div>`;
+      });
+    }
+
+    body.innerHTML = html;
+
+    let footerHtml = '';
+    if (!soloLectura) {
+      if (sat) {
+        footerHtml += `<button class="btn-primary" onclick="closeDayActionsModal(); openModalForDate('${d}', null)">➕ Agregar guardia</button>`;
+      }
+      footerHtml += `<button class="btn-warning" onclick="closeDayActionsModal(); openApunteModal('${d}', null)">📝 Agregar nota</button>`;
+    }
+    footerHtml += `<button class="btn-secondary" onclick="closeDayActionsModal()">Cerrar</button>`;
+    footer.innerHTML = footerHtml;
+
+    modal.style.display = "flex";
+  }
+
+  function closeDayActionsModal() {
+    document.getElementById("dayActionsModal").style.display = "none";
+  }
+
+  function verDetalleNotaSoloLectura(d, apunteId) {
+    let exist = findApunteById(d, apunteId);
+    if (exist) {
+      let responsables = exist.responsables || ["Sin responsable"];
+      Swal.fire({
+        title: exist.titulo || "Nota",
+        html: `<div style="text-align:left;">
+          <p><strong>📅 Fecha:</strong> ${d} (${getDayOfWeekSpanish(d)})</p>
+          <p><strong>👤 Responsables:</strong> ${responsables.join(", ")}</p>
+          <p><strong>💼 Puesto:</strong> ${exist.puesto || "Sin puesto"}</p>
+          <p><strong>🕒 Horario:</strong> ${exist.horario || "Sin horario"}</p>
+          <hr>
+          <p><strong>📝 ${exist.titulo || "Sin título"}</strong></p>
+          <p>${exist.texto || "Sin contenido"}</p>
+        </div>`,
+        icon: "info",
+        confirmButtonColor: "#1a5d8c"
+      });
+    }
+  }
   
-  function showHistoryModal(d){ 
-    let g=guards.get(d); 
+  function showHistoryModal(d, guardiaId){ 
+    let listaG = getGuardiasDelDia(d);
+    let g = guardiaId ? listaG.find(item => item.id === guardiaId) : listaG[0];
     if(!g) return; 
-    let h=horarios.get(d); 
     let modal=document.getElementById("historyModal"); 
     let cont=document.getElementById("historyContent"); 
     modal.setAttribute("data-current-date",d); 
+    modal.setAttribute("data-current-id",g.id); 
     let nombres = g.personNames || [g.personName];
-    let html=`<div style="background:#eef3fc; padding:12px; border-radius:1rem;"><strong>📅 ${d} (${getDayOfWeekSpanish(d)})</strong><br>👤 ${nombres.join(", ")}<br>💼 ${g.position}${h?`<br>🕒 ${h.entrada} - ${h.salida}`:''}</div>`; 
+    let horarioTxt = (g.entrada && g.salida) ? `<br>🕒 ${g.entrada} - ${g.salida}` : '';
+    let html=`<div style="background:#eef3fc; padding:12px; border-radius:1rem;"><strong>📅 ${d} (${getDayOfWeekSpanish(d)})</strong><br>👤 ${nombres.join(", ")}<br>💼 ${g.position}${horarioTxt}</div>`; 
     if(g.history?.length){ 
       html+=`<div class="history-list"><strong>📜 ${g.history.length} cambios</strong><br>`; 
       [...g.history].reverse().forEach(e=>{ 
@@ -2105,48 +2500,37 @@
       html+=`</div>`; 
     } else html+=`<div style="padding:16px;text-align:center;">✨ Sin cambios previos</div>`; 
     cont.innerHTML=html; 
+    document.getElementById("editFromHistoryBtn").style.display = soloLectura ? "none" : "inline-block";
     modal.style.display="flex"; 
   }
   
   function closeHistoryModal(){ document.getElementById("historyModal").style.display="none"; }
   
-  function openApunteModal(d){ 
+  function openApunteModal(d, apunteId = null){ 
     if(soloLectura){ 
-      let exist=apuntes.get(d);
-      if(exist) {
-        let responsables = exist.responsables || ["Sin responsable"];
-        Swal.fire({
-          title: exist.titulo || "Nota",
-          html: `<div style="text-align:left;">
-            <p><strong>📅 Fecha:</strong> ${d} (${getDayOfWeekSpanish(d)})</p>
-            <p><strong>👤 Responsables:</strong> ${responsables.join(", ")}</p>
-            <p><strong>💼 Puesto:</strong> ${exist.puesto || "Sin puesto"}</p>
-            <p><strong>🕒 Horario:</strong> ${exist.horario || "Sin horario"}</p>
-            <hr>
-            <p><strong>📝 ${exist.titulo || "Sin título"}</strong></p>
-            <p>${exist.texto || "Sin contenido"}</p>
-          </div>`,
-          icon: "info",
-          confirmButtonColor: "#1a5d8c"
-        });
+      if (apunteId) {
+        verDetalleNotaSoloLectura(d, apunteId);
       } else {
-        alert("No hay nota registrada para esta fecha");
+        let lista = getApuntesDelDia(d);
+        if (lista.length > 0) verDetalleNotaSoloLectura(d, lista[0].id);
+        else alert("No hay nota registrada para esta fecha");
       }
       return; 
     } 
     
     let modal=document.getElementById("apunteModal"); 
     currentApunteOriginalDate = d;
+    currentEditApunteId = apunteId;
     
     let fechaDisplay = document.getElementById("apunteFechaDisplay");
     fechaDisplay.innerHTML = `<strong>📅 Fecha actual:</strong> ${d} (${getDayOfWeekSpanish(d)})`;
     
     document.getElementById("apunteFecha").value = d;
     
-    let existeNota = apuntes.has(d);
-    document.getElementById("apunteDateChangeWarning").style.display = existeNota ? "block" : "none";
+    let exist = apunteId ? findApunteById(d, apunteId) : null;
+    document.getElementById("apunteModalTitle").innerText = exist ? "✏️ Editar Nota / Apunte" : "📝 Nueva Nota / Apunte";
+    document.getElementById("apunteDateChangeWarning").style.display = exist ? "block" : "none";
     
-    let exist=apuntes.get(d); 
     let tituloInput=document.getElementById("apunteTitulo"); 
     let textoArea=document.getElementById("apunteTexto");
     let colorInput=document.getElementById("apunteColor");
@@ -2214,6 +2598,7 @@
     document.getElementById("apunteTexto").value="";
     document.getElementById("apuntePersonPosition").value="";
     currentApunteOriginalDate = null;
+    currentEditApunteId = null;
     window._modalOrigen = null;
   }
   
@@ -2249,15 +2634,15 @@
       }
     }
     
-    saveApunteWithOptionalMove(currentApunteOriginalDate, newDate, titulo, texto, responsables, puesto, eH, eM, sH, sM, color); 
+    saveApunteWithOptionalMove(currentApunteOriginalDate, currentEditApunteId, newDate, titulo, texto, responsables, puesto, eH, eM, sH, sM, color); 
     closeApunteModal(); 
   }
   
   function deleteApunteFromModal(){ 
-    let d = document.getElementById("apunteFecha").value;
-    if(!d) return;
-    if(confirm(`¿Eliminar la nota del ${d}?`)){ 
-      removeApunte(d); 
+    let d = currentApunteOriginalDate || document.getElementById("apunteFecha").value;
+    if(!d || !currentEditApunteId) return;
+    if(confirm(`¿Eliminar esta nota del ${d}?`)){ 
+      removeApunte(d, currentEditApunteId); 
       closeApunteModal(); 
     } 
   }
@@ -2284,10 +2669,9 @@
   function renderDayView(){ 
     let cont=document.getElementById("calendarView"), 
         d=currentSelectedDate, 
-        g=guards.get(d), 
+        listaG=getGuardiasDelDia(d), 
         sat=isSaturday(d), 
-        h=horarios.get(d), 
-        a=apuntes.get(d); 
+        listaA=getApuntesDelDia(d); 
     
     if(!d || d === "") {
       let fecha = new Date(currentYear, currentMonth, 1);
@@ -2310,26 +2694,42 @@
     
     fechaFormateada = fechaFormateada.charAt(0).toUpperCase() + fechaFormateada.slice(1);
     
-    let notaHtml = '';
-    if(a) {
-      let color = a.color || '#f59e0b';
-      let responsables = a.responsables || ["Sin responsable"];
-      notaHtml = `<div style="margin-top:12px; background:${color}15; border-left:4px solid ${color}; padding:12px; border-radius:1rem;">
-        <strong>📌 ${escapeHtml(a.titulo)}</strong><br>
-        👤 ${responsables.join(", ")} · ${escapeHtml(a.puesto || "Sin puesto")}<br>
-        🕒 ${escapeHtml(a.horario || "Sin horario")}<br>
-        ${escapeHtml(a.texto.substring(0,150))}${a.texto.length > 150 ? '...' : ''}
-      </div>`;
+    let guardiasHtml = '';
+    if(listaG.length > 0) {
+      listaG.forEach(g => {
+        let nombres = g.personNames || [g.personName];
+        let horarioTxt = (g.entrada && g.salida) ? `<br>🕒 ${g.entrada} - ${g.salida}` : '';
+        guardiasHtml += `<div style="margin-top:0.75rem; border-left:4px solid ${g.color}; padding:12px; background:${g.color}12; border-radius:1rem; display:flex; justify-content:space-between; align-items:center; gap:8px;">
+          <div style="cursor:pointer; flex:1;" onclick="showHistoryModal('${d}', '${g.id}')">
+            <strong>👤 ${escapeHtml(nombres.join(", "))}</strong> · ${escapeHtml(g.position)}
+            ${horarioTxt}
+            <div style="margin-top:4px; font-size:0.78rem; color:#4a7a9e;">📜 ${g.history?.length || 0} cambios</div>
+          </div>
+          ${!soloLectura ? `<button class="btn-primary" style="padding:5px 12px; font-size:0.75rem;" onclick="openModalForDate('${d}', '${g.id}')">✏️ Editar</button>` : ''}
+        </div>`;
+      });
+    } else if (sat) {
+      guardiasHtml = '<div style="margin-top:1rem;">⚡ Sin guardias asignadas</div>';
     }
-    
-    let guardiaHtml = '';
-    if(g) {
-      let nombres = g.personNames || [g.personName];
-      guardiaHtml = `<div style="margin-top:1rem; border-left:4px solid ${g.color}; padding:12px; background:${g.color}08; border-radius:1rem;" onclick="showHistoryModal('${d}')">
-        <strong>👤 ${nombres.join(", ")}</strong> · ${g.position}
-        ${h ? `<br>🕒 ${h.entrada} - ${h.salida}` : ''}
-        <div style="margin-top:6px;">📜 ${g.history?.length || 0} cambios</div>
-      </div>`;
+
+    let notasHtml = '';
+    if(listaA.length > 0) {
+      listaA.forEach(a => {
+        let color = a.color || '#f59e0b';
+        let responsables = a.responsables || ["Sin responsable"];
+        notasHtml += `<div style="margin-top:0.75rem; background:${color}15; border-left:4px solid ${color}; padding:12px; border-radius:1rem; display:flex; justify-content:space-between; align-items:center; gap:8px;">
+          <div style="flex:1;">
+            <strong>📌 ${escapeHtml(a.titulo)}</strong><br>
+            👤 ${escapeHtml(responsables.join(", "))} · ${escapeHtml(a.puesto || "Sin puesto")}<br>
+            🕒 ${escapeHtml(a.horario || "Sin horario")}<br>
+            ${escapeHtml(a.texto.substring(0,150))}${a.texto.length > 150 ? '...' : ''}
+          </div>
+          ${!soloLectura 
+            ? `<button class="btn-warning" style="padding:5px 12px; font-size:0.75rem;" onclick="openApunteModal('${d}', '${a.id}')">✏️ Editar</button>`
+            : `<button class="btn-secondary" style="padding:5px 12px; font-size:0.75rem;" onclick="verDetalleNotaSoloLectura('${d}', '${a.id}')">📄 Ver</button>`
+          }
+        </div>`;
+      });
     }
     
     cont.innerHTML = `<div style="background:white; border-radius:1.5rem; padding:1rem;">
@@ -2338,13 +2738,13 @@
         <span style="background:${sat?'#e2f0e8':'#feeceb'}; padding:4px 14px; border-radius:40px; display:inline-block; margin-bottom:12px;">
           ${sat?'✅ SÁBADO':'❌ ' + getDayOfWeekSpanish(d).toUpperCase()}
         </span>
-        ${guardiaHtml || '<div style="margin-top:1rem;">⚡ Sin guardia asignada</div>'}
-        ${notaHtml}
+        ${guardiasHtml}
+        ${notasHtml}
         <div style="margin-top:24px; display:flex; gap:8px; flex-wrap:wrap;">
           <button id="dayPrev" class="btn-secondary">◀ Anterior</button>
           <button id="dayNext" class="btn-secondary">Siguiente ▶</button>
-          ${sat && !soloLectura ? '<button id="dayEdit" class="btn-primary">✏️ Editar guardia</button>' : ''}
-          ${!soloLectura ? '<button id="dayApunte" class="btn-secondary">📝 Nota</button>' : (a ? '<button id="dayApunteViewOnly" class="btn-secondary" style="background:#f0f4fa;">📄 Ver nota</button>' : '')}
+          ${sat && !soloLectura ? '<button id="dayAddGuardia" class="btn-primary">➕ Agregar guardia</button>' : ''}
+          ${!soloLectura ? '<button id="dayAddApunte" class="btn-warning">📝 Agregar nota</button>' : ''}
         </div>
       </div>
     </div>`;
@@ -2371,43 +2771,15 @@
       renderCurrentView();
     });
     
-    document.getElementById("dayEdit")?.addEventListener("click", (e) => {
+    document.getElementById("dayAddGuardia")?.addEventListener("click", (e) => {
       e.stopPropagation();
-      openModalForDate(currentSelectedDate);
+      openModalForDate(currentSelectedDate, null);
     });
     
-    let dayApunte = document.getElementById("dayApunte");
-    if(dayApunte) {
-      dayApunte.addEventListener("click", (e) => {
-        e.stopPropagation();
-        openApunteModal(currentSelectedDate);
-      });
-    }
-    
-    let dayViewOnly = document.getElementById("dayApunteViewOnly");
-    if(dayViewOnly) {
-      dayViewOnly.addEventListener("click", (e) => {
-        e.stopPropagation();
-        let aTemp = apuntes.get(currentSelectedDate);
-        if(aTemp) {
-          let responsables = aTemp.responsables || ["Sin responsable"];
-          Swal.fire({
-            title: aTemp.titulo, 
-            html: `<div style="text-align:left;">
-              <p><strong>👤 Responsables:</strong> ${responsables.join(", ")}</p>
-              <p><strong>💼 Puesto:</strong> ${aTemp.puesto || "Sin puesto"}</p>
-              <p><strong>🕒 Horario:</strong> ${aTemp.horario || "Sin horario"}</p>
-              <hr>
-              <p>${aTemp.texto || "Sin contenido"}</p>
-            </div>`,
-            icon: "info", 
-            confirmButtonColor: "#1a5d8c"
-          });
-        } else {
-          alert("No hay nota registrada");
-        }
-      });
-    }
+    document.getElementById("dayAddApunte")?.addEventListener("click", (e) => {
+      e.stopPropagation();
+      openApunteModal(currentSelectedDate, null);
+    });
   }
   
   function renderMonthView(){ 
@@ -2421,99 +2793,131 @@
       } else { 
         dayNumber=i-startOffset+1; yearFor=y; monthFor=m; 
       } 
-      let dateStr=`${yearFor}-${String(monthFor+1).padStart(2,'0')}-${String(dayNumber).padStart(2,'0')}`,g=guards.get(dateStr),sat=isSaturday(dateStr),h=horarios.get(dateStr),a=apuntes.get(dateStr); 
-      let badge=''; 
-      if(g){ 
-        let nombres = g.personNames || [g.personName];
-        let nombreMostrar = nombres.length > 2 ? nombres.slice(0,2).join(", ") + ` +${nombres.length-2}` : nombres.join(", ");
-        badge=`<div class="guardia-badge" data-date="${dateStr}">👤 ${nombreMostrar}<br><small>${g.position}</small>${g.history?.length?' 📜':''}</div>`; 
-        if(h) badge+=`<div class="horario-badge">🕒 ${h.entrada}-${h.salida}</div>`; 
-      } else if(sat&&isCurrent) badge=`<div class="saturday-badge">📌 Sábado</div>`; 
-      if(a){ 
-        let tituloCorto=a.titulo.length>20?a.titulo.substring(0,18)+'...':a.titulo; 
-        let color = a.color || '#f59e0b';
-        let responsables = a.responsables || ["Sin responsable"];
-        let respCorto = responsables.length > 2 ? responsables.slice(0,2).join(", ") + ` +${responsables.length-2}` : responsables.join(", ");
-        badge+=`<div class="apunte-badge" data-apunte="${dateStr}" style="border-left:2px solid ${color};" title="${escapeHtml(a.titulo)}: ${escapeHtml(a.texto)}">📝 ${escapeHtml(tituloCorto)}<br><small>${escapeHtml(respCorto)}</small></div>`; 
-      } 
-      html+=`<div class="day-cell ${!isCurrent?'other-month':''}" data-date="${dateStr}"><div class="day-number">${dayNumber}</div>${badge}</div>`; 
+      let dateStr=`${yearFor}-${String(monthFor+1).padStart(2,'0')}-${String(dayNumber).padStart(2,'0')}`;
+      let listaG=getGuardiasDelDia(dateStr), sat=isSaturday(dateStr), listaA=getApuntesDelDia(dateStr); 
+      let badgesHtml=''; 
+      
+      if(listaG.length > 0){ 
+        listaG.forEach(g => {
+          let nombres = g.personNames || [g.personName];
+          let nombreMostrar = nombres.length > 2 ? nombres.slice(0,2).join(", ") + ` +${nombres.length-2}` : nombres.join(", ");
+          let gColor = g.color || '#1a5d8c';
+          badgesHtml += `<div class="guardia-item-block" data-date="${dateStr}" data-gid="${g.id}" style="border-left-color:${gColor}; background:${gColor}15;">
+            <div class="guardia-badge" style="color:#0a3a5c;">👤 ${escapeHtml(nombreMostrar)}<br><small>${escapeHtml(g.position)}</small>${g.history?.length?' 📜':''}</div>
+            ${(g.entrada && g.salida) ? `<div class="horario-badge">🕒 ${g.entrada}-${g.salida}</div>` : ''}
+          </div>`;
+        });
+      } else if(sat && isCurrent && listaA.length === 0) {
+        badgesHtml += `<div class="saturday-badge">📌 Sábado</div>`; 
+      }
+
+      if(listaA.length > 0){ 
+        listaA.forEach(a => {
+          let tituloCorto=a.titulo.length>20?a.titulo.substring(0,18)+'...':a.titulo; 
+          let color = a.color || '#f59e0b';
+          let responsables = a.responsables || ["Sin responsable"];
+          let respCorto = responsables.length > 2 ? responsables.slice(0,2).join(", ") + ` +${responsables.length-2}` : responsables.join(", ");
+          badgesHtml += `<div class="apunte-badge" data-apunte="${dateStr}" data-aid="${a.id}" style="border-left:3px solid ${color}; background:${color}18;" title="${escapeHtml(a.titulo)}: ${escapeHtml(a.texto)}">📝 ${escapeHtml(tituloCorto)}<br><small>${escapeHtml(respCorto)}</small></div>`; 
+        });
+      }
+
+      let quickAddHtml = '';
+      if (!soloLectura) {
+        quickAddHtml = `<div class="day-quick-add">
+          ${sat ? `<span class="quick-btn" data-add-guardia="${dateStr}" title="Agregar guardia">+G</span>` : ''}
+          <span class="quick-btn nota" data-add-nota="${dateStr}" title="Agregar nota">+N</span>
+        </div>`;
+      }
+
+      html+=`<div class="day-cell ${!isCurrent?'other-month':''}" data-date="${dateStr}">
+        <div class="day-header-row">
+          <div class="day-number">${dayNumber}</div>
+          ${quickAddHtml}
+        </div>
+        ${badgesHtml}
+      </div>`; 
     } 
     html+=`</div></div>`; 
     document.getElementById("calendarView").innerHTML=html; 
     
-    document.querySelectorAll('.day-cell').forEach(cell=>{ 
+    document.querySelectorAll('[data-add-guardia]').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        let date = btn.getAttribute('data-add-guardia');
+        currentSelectedDate = date;
+        openModalForDate(date, null);
+      });
+    });
+
+    document.querySelectorAll('[data-add-nota]').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        let date = btn.getAttribute('data-add-nota');
+        currentSelectedDate = date;
+        openApunteModal(date, null);
+      });
+    });
+
+    document.querySelectorAll('.guardia-item-block').forEach(b => {
+      b.addEventListener('click', (e) => { 
+        e.stopPropagation(); 
+        let fecha = b.dataset.date;
+        let gid = b.dataset.gid;
+        currentSelectedDate = fecha;
+        showHistoryModal(fecha, gid); 
+      });
+    });
+
+    document.querySelectorAll('.apunte-badge').forEach(b => {
+      b.addEventListener('click', (e) => {
+        e.stopPropagation();
+        let date = b.dataset.apunte;
+        let aid = b.dataset.aid;
+        currentSelectedDate = date;
+        if (soloLectura) {
+          verDetalleNotaSoloLectura(date, aid);
+        } else {
+          openApunteModal(date, aid);
+        }
+      });
+    });
+
+    document.querySelectorAll('.day-cell').forEach(cell => { 
       let date = cell.dataset.date; 
       let isSat = isSaturday(date);
       
       cell.addEventListener('click', (e) => { 
-        if(e.target.closest('.guardia-badge')) return; 
-        if(e.target.closest('.apunte-badge')){ 
-          if(soloLectura){ 
-            let nota=apuntes.get(date); 
-            if(nota) {
-              let responsables = nota.responsables || ["Sin responsable"];
+        if(e.target.closest('.guardia-item-block') || e.target.closest('.apunte-badge') || e.target.closest('.day-quick-add')) return; 
+        currentSelectedDate = date;
+        let listaG = getGuardiasDelDia(date);
+        let listaA = getApuntesDelDia(date);
+
+        if (isSat) {
+          if (listaG.length === 0 && listaA.length === 0) {
+            if (!soloLectura) {
+              openDayActionsModal(date);
+            } else {
               Swal.fire({
-                title: nota.titulo,
-                html: `<div style="text-align:left;">
-                  <p><strong>👤 Responsables:</strong> ${responsables.join(", ")}</p>
-                  <p><strong>💼 Puesto:</strong> ${nota.puesto || "Sin puesto"}</p>
-                  <p><strong>🕒 Horario:</strong> ${nota.horario || "Sin horario"}</p>
-                  <hr>
-                  <p>${nota.texto || "Sin contenido"}</p>
-                </div>`,
+                title: "Sin eventos",
+                text: `El ${date} (${getDayOfWeekSpanish(date)}) no tiene guardias ni notas asignadas`,
                 icon: "info",
                 confirmButtonColor: "#1a5d8c"
-              }); 
-            } else alert("Nota no encontrada"); 
-          } else openApunteModal(date); 
-          return; 
-        } 
-        
-        if(isSat){ 
-          currentSelectedDate = date;
-          let g=guards.get(date); 
-          if(g && !soloLectura) { 
-            openModalForDate(date); 
-          } else if(!g && !soloLectura) { 
-            openModalForDate(date); 
-          } else if(g && soloLectura) { 
-            showHistoryModal(date); 
-          } else if(!g && soloLectura) {
-            Swal.fire({
-              title: "Sin guardia",
-              text: `El ${date} (${getDayOfWeekSpanish(date)}) no tiene guardia asignada`,
-              icon: "info",
-              confirmButtonColor: "#1a5d8c"
-            });
+              });
+            }
+          } else {
+            openDayActionsModal(date);
           }
-        } else if(!soloLectura) { 
-          openApunteModal(date); 
-        } else { 
-          let nota=apuntes.get(date); 
-          if(nota) {
-            let responsables = nota.responsables || ["Sin responsable"];
-            Swal.fire({
-              title: nota.titulo,
-              html: `<div style="text-align:left;">
-                <p><strong>👤 Responsables:</strong> ${responsables.join(", ")}</p>
-                <p><strong>💼 Puesto:</strong> ${nota.puesto || "Sin puesto"}</p>
-                <p><strong>🕒 Horario:</strong> ${nota.horario || "Sin horario"}</p>
-                <hr>
-                <p>${nota.texto || "Sin contenido"}</p>
-              </div>`,
-              icon: "info"
-            }); 
-          } 
-        } 
+        } else {
+          if (listaA.length === 0) {
+            if (!soloLectura) {
+              openApunteModal(date, null);
+            }
+          } else {
+            openDayActionsModal(date);
+          }
+        }
       }); 
     }); 
-    
-    document.querySelectorAll('.guardia-badge').forEach(b=>b.addEventListener('click',(e)=>{ 
-      e.stopPropagation(); 
-      let fecha = b.dataset.date;
-      currentSelectedDate = fecha;
-      showHistoryModal(fecha); 
-    })); 
   }
   
   function renderYearView(){ 
@@ -2523,18 +2927,33 @@
       for(let d=1;d<=daysInMonth;d++){ 
         let ds=`${y}-${String(m+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`; 
         if(isSaturday(ds)){ 
-          let g=guards.get(ds),h=horarios.get(ds),a=apuntes.get(ds); 
-          saturdays.push({day:d,guard:g?g.personNames.join(", "):null,position:g?.position,color:g?.color,dateStr:ds,horarioTexto:h?`${h.entrada} - ${h.salida}`:null,notaTitulo:a?a.titulo:null,notaResponsables:a?a.responsables:null,notaPuesto:a?a.puesto:null,notaHorario:a?a.horario:null}); 
+          let listaG=getGuardiasDelDia(ds), listaA=getApuntesDelDia(ds); 
+          saturdays.push({day:d, guardias:listaG, notas:listaA, dateStr:ds}); 
         } 
       } 
       html+=`<div class="month-card"><div class="month-title">${monthName.toUpperCase()}</div>`; 
       saturdays.forEach(s=>{ 
-        let notaInfo = '';
-        if(s.notaTitulo) {
-          let resp = s.notaResponsables ? s.notaResponsables.join(", ") : '';
-          notaInfo = `<div style="font-size:0.6rem; margin-top:3px; color:#c26b1a;">📌 ${escapeHtml(s.notaTitulo)}${resp ? ` · 👤 ${escapeHtml(resp)}` : ''}</div>`;
+        let guardiasHtml = '';
+        let bgCol = '#f9fbfe';
+        if (s.guardias.length > 0) {
+          bgCol = s.guardias[0].color + '15';
+          guardiasHtml = s.guardias.map(g => {
+            let hTxt = (g.entrada && g.salida) ? ` (🕒 ${g.entrada}-${g.salida})` : '';
+            return `<div style="font-size:0.72rem; margin-top:2px;">👤 ${escapeHtml(g.personNames.join(", "))}${hTxt}</div>`;
+          }).join('');
+        } else {
+          guardiasHtml = ` · 🔘 Sin asignar`;
         }
-        html+=`<div style="margin:6px 0; padding:8px; border-radius:14px; background:${s.guard?(s.color+'15'):'#f9fbfe'}; cursor:pointer;" onclick="showHistoryModal('${s.dateStr}')"><strong>${s.day}</strong> · ${s.guard||'🔘 Sin asignar'}${s.guard&&s.horarioTexto?`<div style="font-size:0.65rem; margin-top:3px;">🕒 ${s.horarioTexto}</div>`:''}${notaInfo}</div>`; 
+
+        let notasHtml = '';
+        if (s.notas.length > 0) {
+          notasHtml = s.notas.map(n => {
+            let resp = n.responsables ? n.responsables.join(", ") : '';
+            return `<div style="font-size:0.62rem; margin-top:3px; color:#c26b1a;">📌 ${escapeHtml(n.titulo)}${resp ? ` · 👤 ${escapeHtml(resp)}` : ''}</div>`;
+          }).join('');
+        }
+
+        html+=`<div style="margin:6px 0; padding:8px; border-radius:14px; background:${bgCol}; cursor:pointer;" onclick="openDayActionsModal('${s.dateStr}')"><strong>${s.day}</strong>${guardiasHtml}${notasHtml}</div>`; 
       }); 
       html+=`</div>`; 
     } 
@@ -2542,17 +2961,21 @@
     document.getElementById("calendarView").innerHTML=html; 
   }
   
-  let currentEditOriginalDate=null;
-  function openModalForDate(d){ 
+  function openModalForDate(d, guardiaId = null){ 
     if(soloLectura){ alert("Perfil Visitante: solo consulta"); return; } 
     if(!isSaturday(d)){ alert(`❌ ${d} es ${getDayOfWeekSpanish(d)}. Solo sábados.`); return; } 
     let modal=document.getElementById("guardiaModal"); 
     document.getElementById("modalDate").value=d; 
     modal.setAttribute("data-date",d); 
     currentEditOriginalDate=d; 
-    let ex=guards.get(d),exH=horarios.get(d); 
+    currentEditGuardiaId=guardiaId;
+
+    let ex = guardiaId ? findGuardiaById(d, guardiaId) : null;
     let eH='',eM='',sH='',sM=''; 
-    if(exH){ let [h1,m1]=exH.entrada.split(':'),[h2,m2]=exH.salida.split(':'); eH=h1; eM=m1; sH=h2; sM=m2; } 
+    if(ex && ex.entrada && ex.salida){ 
+      let [h1,m1]=ex.entrada.split(':'),[h2,m2]=ex.salida.split(':'); 
+      eH=h1; eM=m1; sH=h2; sM=m2; 
+    } 
     llenarSelectoresHorario(eH,eM,sH,sM); 
     
     if (!guardiaDropdown) {
@@ -2593,7 +3016,11 @@
     modal.style.display="flex"; 
   }
   
-  function closeModal(){ document.getElementById("guardiaModal").style.display="none"; }
+  function closeModal(){ 
+    document.getElementById("guardiaModal").style.display="none"; 
+    currentEditOriginalDate=null;
+    currentEditGuardiaId=null;
+  }
   
   function saveFromModal(){ 
     let newDate=document.getElementById("modalDate").value, 
@@ -2613,11 +3040,17 @@
       let eTot=parseInt(eH)*60+parseInt(eM), sTot=parseInt(sH)*60+parseInt(sM); 
       if(sTot<=eTot){ alert("Salida debe ser posterior a la entrada"); return; } 
     } 
-    saveGuardiaWithOptionalMove(currentEditOriginalDate,newDate,nombres,position,color,entrada,salida); 
+    saveGuardiaWithOptionalMove(currentEditOriginalDate, currentEditGuardiaId, newDate, nombres, position, color, entrada, salida); 
     closeModal(); 
   }
   
-  function deleteFromModal(){ if(confirm("¿Eliminar guardia?")){ removeGuardia(currentEditOriginalDate); closeModal(); } }
+  function deleteFromModal(){ 
+    if(confirm("¿Eliminar guardia?")){ 
+      removeGuardia(currentEditOriginalDate, currentEditGuardiaId); 
+      closeModal(); 
+    } 
+  }
+
   function updateNav(){ 
     document.getElementById("yearSelect").value = currentYear; 
     let meses = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre']; 
@@ -2756,15 +3189,26 @@
       let offset=(6-ref.getDay()+7)%7; 
       let sat=new Date(ref); 
       sat.setDate(ref.getDate()+offset); 
-      openModalForDate(`${sat.getFullYear()}-${String(sat.getMonth()+1).padStart(2,'0')}-${String(sat.getDate()).padStart(2,'0')}`); 
-    }); 
+      openModalForDate(`${sat.getFullYear()}-${String(sat.getMonth()+1).padStart(2,'0')}-${String(sat.getDate()).padStart(2,'0')}`, null); 
+    });
+
+    document.getElementById("addNotaBtn").addEventListener("click",()=>{ 
+      if(soloLectura){ 
+        Swal.fire("Acceso restringido","Visitante no puede agregar","warning"); 
+        return; 
+      } 
+      let targetDate = currentSelectedDate || `${currentYear}-${String(currentMonth+1).padStart(2,'0')}-01`;
+      openApunteModal(targetDate, null); 
+    });
+
     document.getElementById("saveGuardiaBtn").addEventListener("click",saveFromModal); 
     document.getElementById("cancelModalBtn").addEventListener("click",closeModal); 
     document.getElementById("deleteGuardiaModalBtn").addEventListener("click",deleteFromModal); 
     document.getElementById("closeHistoryBtn").addEventListener("click",closeHistoryModal); 
     document.getElementById("editFromHistoryBtn").addEventListener("click",()=>{ 
       let date=document.getElementById("historyModal").getAttribute("data-current-date"); 
-      if(date) openModalForDate(date); 
+      let gid=document.getElementById("historyModal").getAttribute("data-current-id"); 
+      if(date) openModalForDate(date, gid); 
       closeHistoryModal(); 
     }); 
     document.getElementById("personColor").addEventListener("input",e=>{ 
